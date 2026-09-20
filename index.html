@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldsmith JTS Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F6F5F0;
+    --surface: #FFFFFF;
+    --ink: #22281F;
+    --ink-soft: #565F55;
+    --green: #2F6B4F;
+    --green-soft: #E7EFE9;
+    --gold: #B4863A;
+    --gold-soft: #F5EBD9;
+    --border: #DEDCD2;
+    --shadow: rgba(34,40,31,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #171B15; --surface: #1F2419; --ink: #EDEEE7; --ink-soft: #A7AE9E;
+      --green: #6FAE8C; --green-soft: #24322A; --gold: #D8B26B; --gold-soft: #2C2718;
+      --border: #333A2D; --shadow: rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #171B15; --surface: #1F2419; --ink: #EDEEE7; --ink-soft: #A7AE9E;
+    --green: #6FAE8C; --green-soft: #24322A; --gold: #D8B26B; --gold-soft: #2C2718;
+    --border: #333A2D; --shadow: rgba(0,0,0,0.35);
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; margin: 0; line-height: 1.55; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  nav .navwrap { max-width: 980px; margin: 0 auto; padding: 0 20px; display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+  nav .brand { font-family: 'Source Serif 4', Georgia, serif; font-weight: 700; font-size: 16px; color: var(--green); margin-right: auto; }
+  nav a { color: var(--ink-soft); text-decoration: none; font-size: 14px; font-weight: 500; }
+  nav a:hover { color: var(--green); }
+
+  header.hero { padding: 52px 0 34px; border-bottom: 1px solid var(--border); }
+  header.hero .eyebrow { color: var(--green); font-weight: 600; font-size: 15px; margin-bottom: 10px; }
+  header.hero h1 { font-family: 'Source Serif 4', Georgia, serif; font-weight: 700; font-size: clamp(28px, 4vw, 40px); margin: 0 0 14px; letter-spacing: -0.01em; }
+  header.hero p { color: var(--ink-soft); font-size: 16px; max-width: 660px; margin: 0; }
+
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  section h2 { font-family: 'Source Serif 4', Georgia, serif; font-weight: 600; font-size: 26px; margin: 0 0 8px; }
+  section > p.section-intro { color: var(--ink-soft); font-size: 15px; max-width: 680px; margin: 0 0 28px; }
+
+  .path-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+  .path-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px var(--shadow); }
+  .path-card .tag { display: inline-block; font-size: 12px; font-weight: 600; color: var(--green); background: var(--green-soft); padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+  .path-card.judges .tag { color: var(--gold); background: var(--gold-soft); }
+  .path-card h3 { font-family: 'Source Serif 4', Georgia, serif; font-size: 19px; margin: 0 0 10px; }
+  .path-card p { color: var(--ink); font-size: 14.5px; margin: 0 0 10px; }
+  .path-card ul { margin: 0; padding-left: 18px; color: var(--ink-soft); font-size: 14px; }
+  .path-card li { margin-bottom: 4px; }
+  .coming-note { margin-top: 14px; font-size: 13px; color: var(--ink-soft); font-style: italic; border-top: 1px dashed var(--border); padding-top: 10px; }
+
+  .family-note { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-top: 18px; }
+  .family-note h4 { margin: 0 0 6px; font-size: 15px; color: var(--green); }
+  .family-note p { margin: 0; font-size: 14.5px; color: var(--ink); }
+
+  .legend { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 26px; font-size: 14px; color: var(--ink-soft); }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot.last { background: var(--ink-soft); }
+  .dot.tbd { background: var(--gold); }
+
+  .grade-section { margin-top: 36px; }
+  .grade-section:first-of-type { margin-top: 0; }
+  .grade-heading { display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+  .grade-heading h3 { font-family: 'Source Serif 4', Georgia, serif; font-weight: 600; font-size: 21px; margin: 0; }
+  .grade-heading .note { color: var(--ink-soft); font-size: 13px; }
+
+  .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+  .subject-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 3px var(--shadow); }
+  .subject-card h4 { font-size: 13px; font-weight: 600; color: var(--green); margin: 0 0 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .subject-card h4 .sub { color: var(--ink-soft); font-weight: 400; }
+
+  .year-row { display: grid; grid-template-columns: 78px 1fr; gap: 10px; padding: 9px 0; }
+  .year-row + .year-row { border-top: 1px dashed var(--border); }
+  .year-tag { font-size: 12px; font-weight: 600; color: var(--ink-soft); padding-top: 2px; }
+  .year-row.tbd .year-tag { color: var(--gold); }
+  .task-text { font-size: 14.5px; color: var(--ink); }
+  .task-text .when { display: block; color: var(--ink-soft); font-size: 13px; margin-top: 2px; }
+  .task-text .area-label { display: inline-block; font-size: 11px; font-weight: 600; color: var(--green); background: var(--green-soft); padding: 1px 7px; border-radius: 4px; margin-bottom: 5px; }
+  .tbd-text { font-size: 14px; color: var(--ink-soft); font-style: italic; }
+  .tbd-text .choose { color: var(--gold); font-style: normal; font-weight: 500; }
+
+  footer { padding: 30px 0 60px; color: var(--ink-soft); font-size: 13px; }
+
+  .preview-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; color: var(--gold);
+    background: var(--gold-soft); border: 1px solid var(--tbd-border, var(--gold));
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 18px;
+  }
+  .breadcrumb {
+    font-size: 13.5px; color: var(--ink-soft); margin-bottom: 20px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 16px; display: inline-block;
+  }
+  .breadcrumb .seg { color: var(--ink); font-weight: 500; }
+  .breadcrumb .sep { margin: 0 6px; color: var(--border); }
+
+  .folder-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px; margin-bottom: 30px;
+  }
+  .folder-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 14px; box-shadow: 0 1px 3px var(--shadow); text-align: center;
+  }
+  .folder-card .icon { font-size: 26px; margin-bottom: 8px; }
+  .folder-card .label { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .folder-card .count { font-size: 11.5px; color: var(--ink-soft); margin-top: 3px; }
+
+  .teacher-expand {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px 22px; margin-bottom: 26px;
+  }
+  .teacher-expand h4 { margin: 0 0 4px; font-size: 15px; color: var(--green); }
+  .teacher-expand .sub { font-size: 13px; color: var(--ink-soft); margin: 0 0 14px; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    background: var(--green-soft); color: var(--green); font-size: 13px; font-weight: 500;
+    padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .chip .folder-icon { font-size: 13px; }
+
+  .drop-zone {
+    border: 2px dashed var(--tbd-border, var(--gold));
+    background: var(--gold-soft);
+    border-radius: 12px; padding: 34px 20px; text-align: center;
+  }
+  .drop-zone .big-icon { font-size: 30px; margin-bottom: 10px; }
+  .drop-zone p { margin: 0; color: var(--ink); font-size: 14.5px; }
+  .drop-zone .fine { font-size: 12.5px; color: var(--ink-soft); margin-top: 6px; }
+
+  .sheet-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .sheet-table th { background: var(--green-soft); color: var(--green); font-size: 12.5px; font-weight: 600; text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .sheet-table td { padding: 12px 14px; font-size: 14px; color: var(--ink-soft); border-bottom: 1px solid var(--border); font-style: italic; }
+  .sheet-table tr:last-child td { border-bottom: none; }
+  .sheet-wrap { overflow-x: auto; margin-top: 18px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navwrap">
+    <span class="brand">Goldsmith JTS Hub</span>
+    <a href="#overview">Overview</a>
+    <a href="#staying-changing">Staying/Changing</a>
+    <a href="#journey-to-success">Journey to Success</a>
+    <a href="#k4-schedule">Milestone &amp; MSD Schedule</a>
+    <a href="#defense-schedule">5th Grade Defense</a>
+    <a href="#artifacts">Artifacts</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="hero" id="overview">
+    <div class="eyebrow">Goldsmith Elementary</div>
+    <h1>Goldsmith JTS Hub</h1>
+  </header>
+
+  <section id="staying-changing">
+    <h2>What's Staying the Same &amp; What's Changing</h2>
+    <p class="section-intro">This is a quick look at what carries over from last year and what's actually new for 26–27.</p>
+    <div class="path-grid">
+      <div class="path-card">
+        <span class="tag">Staying the Same</span>
+        <ul>
+          <li><strong>Student Experience</strong> — artifacts, reflections, Success Skills</li>
+          <li><strong>Milestones + Defenses</strong> — Exhibition of Learning (K–4th) and Defenses of Learning (5th)</li>
+          <li><strong>Vector Safe Schools training</strong> expectations continue</li>
+          <li><strong>JTS Materials + Resources</strong> — EL and IM</li>
+          <li><strong>Internal school JTS plan</strong> — schools continue their own planning</li>
+        </ul>
+      </div>
+      <div class="path-card judges">
+        <span class="tag">What's Changing</span>
+        <ul>
+          <li><strong>Digital platform</strong> — transitioning away from OTUS</li>
+          <li><strong>Documentation</strong> — a digital process for artifacts, reflections &amp; milestones</li>
+          <li><strong>Defense scoring</strong> — a digitized rubric process</li>
+        </ul>
+        <div class="coming-note">The system around the student experience is changing — the student experience itself is not.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="journey-to-success">
+    <h2>Journey to Success</h2>
+    <p class="section-intro">JTS runs two different ways depending on grade level.</p>
+
+    <div class="path-grid">
+      <div class="path-card">
+        <span class="tag">Kindergarten – 4th Grade</span>
+        <h3>Milestone Project</h3>
+        <p>Each grade picks <strong>one</strong> milestone area for the year — Reading or Math. Students complete a project in that area and present it to <strong>one evaluator</strong>.</p>
+        <ul>
+          <li>One project per grade — Reading or Math</li>
+          <li>Student presents the project to one evaluator</li>
+          <li>The Milestone Presentation schedule for each grade is below</li>
+          <li>Family Day: families invited to see the presentation</li>
+        </ul>
+      </div>
+      <div class="path-card judges">
+        <span class="tag">5th Grade</span>
+        <h3>Defense of Learning</h3>
+        <p>5th grade students defend their Journey Learning by presenting their artifacts to a <strong>panel of judges</strong>.</p>
+        <ul>
+          <li>Student presents to a panel of judges</li>
+          <li>Scored using the <strong>district-provided</strong> Defense of Learning rubric</li>
+          <li>Each panelist fills out and scores their own rubric — no panelist scores on behalf of another</li>
+        </ul>
+        <div class="coming-note">Full defense calendar and judge panel assignments coming as their own section.</div>
+      </div>
+    </div>
+
+    <div class="family-note">
+      <h4>Family Day</h4>
+      <p>Each grade also has a Family Day tied to its milestone window, when families are invited in to see student presentations. Dates for K–4 Family Day are included in the schedule below.</p>
+    </div>
+  </section>
+
+  <section id="k4-schedule">
+    <h2>Milestone &amp; MSD Schedule</h2>
+    <p class="section-intro">Each grade's milestone area, unit, date, and time — last year's shown for reference, this year's filled in as it's finalized.</p>
+    <div class="legend">
+      <span><span class="dot last"></span>2025–26 (last year, reference)</span>
+      <span><span class="dot tbd"></span>2026–27 (projected — not yet set)</span>
+    </div>
+
+    <!-- KINDERGARTEN -->
+    <div class="grade-section">
+      <div class="grade-heading"><h3>Kindergarten</h3><span class="note">Picks one: Reading or Math</span></div>
+      <div class="subject-grid">
+        <div class="subject-card">
+          <h4>Milestone Area <span class="sub">— choose one</span></h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text"><span class="area-label">Reading</span><br>Module 2 Weather Book<span class="when">EOL/Scoring: 1/15/26 @ 10:30</span></div></div>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text"><span class="area-label">Math</span><br>Animal Shape Stamp Art<span class="when">EOL/Scoring: 11/20/25 @ 2:45</span></div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text"><span class="choose">Reading or Math</span> — not yet chosen</div></div>
+        </div>
+        <div class="subject-card">
+          <h4>Family Day</h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text">EL Module 2<span class="when">1/16/26 @ 10:15–10:45</span></div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text">Not yet set</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIRST -->
+    <div class="grade-section">
+      <div class="grade-heading"><h3>First Grade</h3><span class="note">Picks one: Reading or Math</span></div>
+      <div class="subject-grid">
+        <div class="subject-card">
+          <h4>Milestone Area <span class="sub">— choose one</span></h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text"><span class="area-label">Reading</span><br>Module 3<span class="when">EOL/Scoring: 3/4/25 @ 10:30</span></div></div>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text"><span class="area-label">Math</span><br>Story Problem Information<span class="when">EOL/Scoring: 11/5/25 @ 1:30</span></div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text"><span class="choose">Reading or Math</span> — not yet chosen</div></div>
+        </div>
+        <div class="subject-card">
+          <h4>Family Day</h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text">EL Module 3<span class="when">3/5 @ 10:15–10:45</span></div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text">Not yet set</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECOND -->
+    <div class="grade-section">
+      <div class="grade-heading"><h3>Second Grade</h3><span class="note">Picks one: Reading or Math</span></div>
+      <div class="subject-grid">
+        <div class="subject-card">
+          <h4>Milestone Area <span class="sub">— choose one</span></h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text"><span class="area-label">Reading</span><br>Module 2: Fossils<span class="when">EOL/Scoring: Dec. 16, 2025 @ 10:30</span></div></div>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text"><span class="area-label">Math</span><br>Spending Money Task @ 2:30<span class="when">EOL/Scoring: March 25, 2026 @ 2:15</span></div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text"><span class="choose">Reading or Math</span> — not yet chosen</div></div>
+        </div>
+        <div class="subject-card">
+          <h4>Family Day</h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text">Module 2 performance task<span class="when">12/17/25 @ 10:15–10:45</span></div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text">Not yet set</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THIRD -->
+    <div class="grade-section">
+      <div class="grade-heading"><h3>Third Grade</h3><span class="note">Picks one: Reading or Math</span></div>
+      <div class="subject-grid">
+        <div class="subject-card">
+          <h4>Milestone Area <span class="sub">— choose one</span></h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text"><span class="area-label">Reading</span><br>Module 2<span class="when">EOL/Scoring: 1/23/26 @ 1:30</span></div></div>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text"><span class="area-label">Math</span><br>Unit 7: A Space for Chickens<span class="when">Scoring: 4/28 @ 10:30</span></div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text"><span class="choose">Reading or Math</span> — not yet chosen</div></div>
+        </div>
+        <div class="subject-card">
+          <h4>Family Day</h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text">Math task<span class="when">4/30/25 @ 10:15–10:45</span></div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text">Not yet set</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOURTH -->
+    <div class="grade-section">
+      <div class="grade-heading"><h3>Fourth Grade</h3><span class="note">Picks one: Reading or Math</span></div>
+      <div class="subject-grid">
+        <div class="subject-card">
+          <h4>Milestone Area <span class="sub">— choose one</span></h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text"><span class="area-label">Reading</span><br>Module 2<span class="when">EOL/Scoring: 2/5/26 @ 10:30 &amp; 1:45</span></div></div>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text"><span class="area-label">Math</span><br>Unit 6 Paper Flower Decorations<span class="when">Scoring: 3/20 @ 3:15</span></div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text"><span class="choose">Reading or Math</span> — not yet chosen</div></div>
+        </div>
+        <div class="subject-card">
+          <h4>Family Day</h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text">EL Module 2<span class="when">2/6/26 @ 10:15–10:45</span></div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text">Not yet set</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MSD -->
+    <div class="grade-section">
+      <div class="grade-heading"><h3>MSD</h3></div>
+      <div class="subject-grid">
+        <div class="subject-card">
+          <h4>EOL — Scoring Day</h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text">4/1 @ 10:45</div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text">Not yet set</div></div>
+        </div>
+        <div class="subject-card">
+          <h4>MSD Defenses</h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text">4/27 @ 10:45–11:30</div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text">Not yet set</div></div>
+        </div>
+        <div class="subject-card">
+          <h4>Family Day</h4>
+          <div class="year-row"><div class="year-tag">25–26</div><div class="task-text">4/2 @ 10:15</div></div>
+          <div class="year-row tbd"><div class="year-tag">26–27</div><div class="tbd-text">Not yet set</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="defense-schedule">
+    <h2>5th Grade Defense Schedule</h2>
+    <p class="section-intro">Student, date, time, and assigned panel for each 5th grade Defense of Learning. This will display the live Goldsmith Google Sheet once it's built — the table below is a placeholder showing the columns it will have.</p>
+    <span class="preview-badge">⚠ Preview only — not yet connected to a sheet</span>
+    <div class="sheet-wrap">
+      <table class="sheet-table">
+        <thead>
+          <tr><th>Student Name</th><th>Date</th><th>Time</th><th>Panel</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Not yet scheduled</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>Not yet scheduled</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>Not yet scheduled</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="artifacts">
+    <h2>Artifacts — Goldsmith JTS Hub</h2>
+    <p class="section-intro">Artifacts will be housed in a shared Google Drive space — the Goldsmith JTS Hub — organized by grade, then teacher, then <strong>each student's own folder</strong>. Each student's folder is shared directly with them, so their artifacts stay with them even if they transfer to another JCPS school. This is a preview of that structure to show what it will look and feel like. Nothing below is live or linked yet.</p>
+    <span class="preview-badge">⚠ Preview only — not yet connected to Drive</span>
+
+    <div class="breadcrumb">
+      <span class="seg">Goldsmith JTS Hub</span><span class="sep">›</span><span class="seg">Kindergarten</span><span class="sep">›</span><span class="seg">Teacher Name</span><span class="sep">›</span><span class="seg">Student Name</span>
+    </div>
+
+    <div class="folder-grid">
+      <div class="folder-card"><div class="icon">📁</div><div class="label">Kindergarten</div><div class="count">by teacher</div></div>
+      <div class="folder-card"><div class="icon">📁</div><div class="label">First Grade</div><div class="count">by teacher</div></div>
+      <div class="folder-card"><div class="icon">📁</div><div class="label">Second Grade</div><div class="count">by teacher</div></div>
+      <div class="folder-card"><div class="icon">📁</div><div class="label">Third Grade</div><div class="count">by teacher</div></div>
+      <div class="folder-card"><div class="icon">📁</div><div class="label">Fourth Grade</div><div class="count">by teacher</div></div>
+      <div class="folder-card"><div class="icon">📁</div><div class="label">Fifth Grade</div><div class="count">by teacher</div></div>
+    </div>
+
+    <div class="teacher-expand">
+      <h4>Inside a grade folder</h4>
+      <p class="sub">Example: opening "Kindergarten" shows one folder per teacher — placeholder names shown here.</p>
+      <div class="chip-row">
+        <span class="chip"><span class="folder-icon">📁</span>Teacher Name 1</span>
+        <span class="chip"><span class="folder-icon">📁</span>Teacher Name 2</span>
+        <span class="chip"><span class="folder-icon">📁</span>Teacher Name 3</span>
+        <span class="chip"><span class="folder-icon">📁</span>Teacher Name 4</span>
+      </div>
+    </div>
+
+    <div class="teacher-expand">
+      <h4>Inside a teacher folder</h4>
+      <p class="sub">Example: opening a teacher's folder shows one folder per student, shared directly with that student — placeholder names shown here.</p>
+      <div class="chip-row">
+        <span class="chip"><span class="folder-icon">👤</span>Student Name 1</span>
+        <span class="chip"><span class="folder-icon">👤</span>Student Name 2</span>
+        <span class="chip"><span class="folder-icon">👤</span>Student Name 3</span>
+        <span class="chip"><span class="folder-icon">👤</span>Student Name 4</span>
+      </div>
+    </div>
+
+    <div class="family-note">
+      <h4>Connecting to the Reflection Doc</h4>
+      <p>The JTS Lead is releasing an Artifact Reflection Google Doc through the JTS Lead Google Classroom, force-copied to each student. Students will use it to reflect on their learning and link to the artifacts saved in their own Drive folder — so the reflection doc and the student's JTS Hub folder work together.</p>
+    </div>
+
+    <div class="drop-zone">
+      <div class="big-icon">⬆️</div>
+      <p>Drag a student's artifact into their own folder to save it</p>
+      <div class="fine">Illustrative only — the live version will connect directly to each student's Drive folder</div>
+    </div>
+  </section>
+
+  <footer>
+    Goldsmith Elementary · JTS Hub — reference only. Contact the JTS committee with questions or corrections.
+  </footer>
+</div>
+
+</body>
+</html>
