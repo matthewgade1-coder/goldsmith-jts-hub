@@ -153,6 +153,22 @@
   .sheet-table td { padding: 12px 14px; font-size: 14px; color: var(--ink-soft); border-bottom: 1px solid var(--border); font-style: italic; }
   .sheet-table tr:last-child td { border-bottom: none; }
   .sheet-wrap { overflow-x: auto; margin-top: 18px; }
+
+  .dir-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin: 22px 0 26px; }
+  .dir-grid .teacher-expand { margin-bottom: 0; }
+  a.chip { text-decoration: none; transition: background .15s, color .15s; }
+  a.chip:hover, a.chip:focus-visible { background: var(--green); color: var(--bg); }
+
+  dialog#leave-dialog { border: 1px solid var(--border); border-radius: 12px; padding: 0; max-width: 420px; width: calc(100% - 40px); background: var(--surface); color: var(--ink); box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+  dialog#leave-dialog::backdrop { background: rgba(0,0,0,.45); }
+  .dlg-body { padding: 22px 24px; }
+  .dlg-body h4 { margin: 0 0 8px; font-family: 'Source Serif 4', Georgia, serif; font-size: 19px; color: var(--ink); }
+  .dlg-body p { margin: 0 0 10px; font-size: 14.5px; }
+  .dlg-body .fine { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 0; }
+  .dlg-actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-top: 16px; }
+  .dlg-actions button, .dlg-actions a { font: inherit; font-size: 14px; font-weight: 600; padding: 9px 16px; border-radius: 8px; cursor: pointer; text-decoration: none; }
+  .dlg-actions button { background: transparent; border: 1px solid var(--border); color: var(--ink); }
+  .dlg-actions a { background: var(--green); color: var(--bg); border: 1px solid var(--green); }
 </style>
 </head>
 <body>
@@ -373,53 +389,85 @@
 
   <section id="artifacts">
     <h2>Artifacts — Goldsmith JTS Hub</h2>
-    <p class="section-intro">Artifacts will be housed in a shared Google Drive space — the Goldsmith JTS Hub — organized by grade, then teacher, then <strong>each student's own folder</strong>. Each student's folder is shared directly with them, so their artifacts stay with them even if they transfer to another JCPS school. This is a preview of that structure to show what it will look and feel like. Nothing below is live or linked yet.</p>
-    <span class="preview-badge">⚠ Preview only — not yet connected to Drive</span>
+    <p class="section-intro">Artifacts are housed in the Goldsmith JTS Hub, a shared Google Drive folder organized by grade, then teacher, then <strong>each student's own folder</strong>. Each student's folder is shared directly with them, so their artifacts stay with them even if they transfer to another JCPS school. Find your name below to open your class folder, then choose the student. Sign in with your JCPS Google account first.</p>
 
     <div class="breadcrumb">
-      <span class="seg">Goldsmith JTS Hub</span><span class="sep">›</span><span class="seg">Kindergarten</span><span class="sep">›</span><span class="seg">Teacher Name</span><span class="sep">›</span><span class="seg">Student Name</span>
+      <span class="seg">Goldsmith JTS Hub</span><span class="sep">›</span><span class="seg">Grade</span><span class="sep">›</span><span class="seg">Teacher Name</span><span class="sep">›</span><span class="seg">Student Name</span>
     </div>
 
-    <div class="folder-grid">
-      <div class="folder-card"><div class="icon">📁</div><div class="label">Kindergarten</div><div class="count">by teacher</div></div>
-      <div class="folder-card"><div class="icon">📁</div><div class="label">First Grade</div><div class="count">by teacher</div></div>
-      <div class="folder-card"><div class="icon">📁</div><div class="label">Second Grade</div><div class="count">by teacher</div></div>
-      <div class="folder-card"><div class="icon">📁</div><div class="label">Third Grade</div><div class="count">by teacher</div></div>
-      <div class="folder-card"><div class="icon">📁</div><div class="label">Fourth Grade</div><div class="count">by teacher</div></div>
-      <div class="folder-card"><div class="icon">📁</div><div class="label">Fifth Grade</div><div class="count">by teacher</div></div>
-    </div>
-
-    <div class="teacher-expand">
-      <h4>Inside a grade folder</h4>
-      <p class="sub">Example: opening "Kindergarten" shows one folder per teacher — placeholder names shown here.</p>
-      <div class="chip-row">
-        <span class="chip"><span class="folder-icon">📁</span>Teacher Name 1</span>
-        <span class="chip"><span class="folder-icon">📁</span>Teacher Name 2</span>
-        <span class="chip"><span class="folder-icon">📁</span>Teacher Name 3</span>
-        <span class="chip"><span class="folder-icon">📁</span>Teacher Name 4</span>
+    <!-- EDIT: teacher folder links. Each <a class="chip" href="..."> is one teacher; copy a line to add one. -->
+    <div class="dir-grid">
+      <div class="teacher-expand">
+        <h4>Kindergarten</h4>
+        <div class="chip-row">
+          <a class="chip" href="https://drive.google.com/drive/folders/1hZEeU2mtBqErAYRbZNZbbDSzru72chVQ" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Davis</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1BrkPlUFLTa9cIqx0G39tIWEE-kVh0tjb" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Dunaway</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1mk9gSnAZspFI6KqEtO5CjzY332eUqRxh" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Martin</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1pZbJ1JY9qwWCEk_TWkDomZlL-YkhnXpG" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Roark</a>
+        </div>
       </div>
-    </div>
-
-    <div class="teacher-expand">
-      <h4>Inside a teacher folder</h4>
-      <p class="sub">Example: opening a teacher's folder shows one folder per student, shared directly with that student — placeholder names shown here.</p>
-      <div class="chip-row">
-        <span class="chip"><span class="folder-icon">👤</span>Student Name 1</span>
-        <span class="chip"><span class="folder-icon">👤</span>Student Name 2</span>
-        <span class="chip"><span class="folder-icon">👤</span>Student Name 3</span>
-        <span class="chip"><span class="folder-icon">👤</span>Student Name 4</span>
+      <div class="teacher-expand">
+        <h4>First Grade</h4>
+        <div class="chip-row">
+          <a class="chip" href="https://drive.google.com/drive/folders/1ZhsveV1nZx3m_vsIGC0raBgCJIltk-au" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Gibson</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1iXfst_GskwbN4dpoMjIjaDpPhbrSMY-5" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Matney</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1igAZ5IBEfsQxo2nDLMpY7y3-yTIBI8Sc" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Quinn</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1MQ5qOWKUx-VJDxNZfYZ9QakXqFDe3RbM" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Stubbs</a>
+        </div>
+      </div>
+      <div class="teacher-expand">
+        <h4>Second Grade</h4>
+        <div class="chip-row">
+          <a class="chip" href="https://drive.google.com/drive/folders/1tgV0mRJzKyYLFEPapRZaL9MHi9Pg_0Ko" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Arend</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1ukglMJNq8alZifSnOuOGHf61_AbKd7rA" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Carpenter</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1HEBs6uWkI8PRahbuumthkuVhDoKjKjHr" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Guelda</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1SK_EhdIu7eqUIwwicW5ujZuhPzZIYF6O" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Rivera</a>
+        </div>
+      </div>
+      <div class="teacher-expand">
+        <h4>Third Grade</h4>
+        <div class="chip-row">
+          <a class="chip" href="https://drive.google.com/drive/folders/1j0guTaFdfYZlDxUlkrDNk9Jke5RB7fEj" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Hunt</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1CTGIrIggzx8uhAqSFM4ojIzpzGtPhXpX" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Tatum</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/13hOXjY-RdLjFpYGWn4otC-mIEz4gEip0" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Velasquez</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/15nVaJiBWQbv54YjRFPSAROTsFA_XKoqx" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Weber</a>
+        </div>
+      </div>
+      <div class="teacher-expand">
+        <h4>Fourth Grade</h4>
+        <div class="chip-row">
+          <a class="chip" href="https://drive.google.com/drive/folders/1oxUce3kk5Wpf4hNgpETwXvUQ_5ZRbGlh" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Barry</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1t8CPyxP4nW_c46h9g_F-AUQWdQbzcVrC" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Bechtel</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1WSHf-ZvwccvPpk3jcr99fXe0W-zfo3ry" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Freibert</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1J5rs4I7nsNqyP8onDJwFFvaGWQzYVG58" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Hellmann</a>
+        </div>
+      </div>
+      <div class="teacher-expand">
+        <h4>Fifth Grade</h4>
+        <div class="chip-row">
+          <a class="chip" href="https://drive.google.com/drive/folders/104k57u6gg3i7Jn9E7HiS0XoY7kuRIrJp" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Armstrong</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1KhWk66UDnly1mnEXal0EsPA574dmlqst" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Johnson</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1jLvP6T8gVV6WUj71PYm0Uj9QteXTBae6" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Morrell</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1pJkEBlBAwU5W6DAzeQO7SW3War-Gzq5y" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Schmidlapp</a>
+        </div>
+      </div>
+      <div class="teacher-expand">
+        <h4>MSD</h4>
+        <div class="chip-row">
+          <a class="chip" href="https://drive.google.com/drive/folders/13EXM-Nh8qr-Zy_GfKQS6E0OiYI3hqZFx" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Knauer</a>
+          <a class="chip" href="https://drive.google.com/drive/folders/1eAbFSKNzSBrANDqS8teTcHaby_Ql-Lg0" target="_blank" rel="noopener"><span class="folder-icon">📁</span>Ranney</a>
+        </div>
       </div>
     </div>
 
     <div class="family-note">
-      <h4>Connecting to the Reflection Doc</h4>
-      <p>The JTS Lead is releasing an Artifact Reflection Google Doc through the JTS Lead Google Classroom, force-copied to each student. Students will use it to reflect on their learning and link to the artifacts saved in their own Drive folder — so the reflection doc and the student's JTS Hub folder work together.</p>
+      <h4>Adding artifacts</h4>
+      <p>Open your class folder, then open the student's folder. Drag a file in from your computer, or for a file already in your Drive, right-click it and choose Organize → Move. Make a copy first if you want the original to stay where it is.</p>
     </div>
 
-    <div class="drop-zone">
-      <div class="big-icon">⬆️</div>
-      <p>Drag a student's artifact into their own folder to save it</p>
-      <div class="fine">Illustrative only — the live version will connect directly to each student's Drive folder</div>
+    <div class="family-note" style="margin-top:14px;">
+      <h4>Connecting to the Reflection Doc</h4>
+      <p>The JTS Lead is releasing an Artifact Reflection Google Doc through the JTS Lead Google Classroom, force-copied to each student. Students will use it to reflect on their learning and link to the artifacts saved in their own Drive folder, so the reflection doc and the student's JTS Hub folder work together.</p>
     </div>
   </section>
 
@@ -428,5 +476,39 @@
   </footer>
 </div>
 
+
+<dialog id="leave-dialog" aria-labelledby="leave-title">
+  <div class="dlg-body">
+    <h4 id="leave-title">You're leaving Goldsmith JTS Hub</h4>
+    <p id="leave-text"></p>
+    <p class="fine">Sign in with your JCPS Google account if Drive asks.</p>
+    <div class="dlg-actions">
+      <button type="button" id="leave-stay">Stay here</button>
+      <a id="leave-go" href="#" target="_blank" rel="noopener">Continue to Google Drive</a>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var dlg = document.getElementById('leave-dialog');
+  if (!dlg || typeof dlg.showModal !== 'function') return; // old browser: links just open normally
+  var go = document.getElementById('leave-go');
+  var txt = document.getElementById('leave-text');
+  var links = document.querySelectorAll('a.chip[href^="https://drive.google.com/"]');
+  Array.prototype.forEach.call(links, function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var who = a.textContent.replace('\u{1F4C1}', '').trim();
+      txt.textContent = who + "'s class folder will open in Google Drive in a new tab.";
+      go.href = a.href;
+      dlg.showModal();
+    });
+  });
+  document.getElementById('leave-stay').addEventListener('click', function () { dlg.close(); });
+  go.addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+})();
+</script>
 </body>
 </html>
