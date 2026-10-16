@@ -169,6 +169,19 @@
   .dlg-actions button, .dlg-actions a { font: inherit; font-size: 14px; font-weight: 600; padding: 9px 16px; border-radius: 8px; cursor: pointer; text-decoration: none; }
   .dlg-actions button { background: transparent; border: 1px solid var(--border); color: var(--ink); }
   .dlg-actions a { background: var(--green); color: var(--bg); border: 1px solid var(--green); }
+  .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .work-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
+  .work-card h4 { font-family: 'Source Serif 4', Georgia, serif; font-size: 20px; margin: 10px 0 8px; color: var(--ink); }
+  .work-card p { font-size: 14.5px; color: var(--ink-soft); margin: 0 0 16px; }
+  .work-tag { display: inline-block; font-size: 12px; font-weight: 600; color: var(--green); background: var(--green-soft); padding: 3px 10px; border-radius: 20px; }
+  .work-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .work-btn { font: inherit; font-size: 14px; font-weight: 600; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--green); background: var(--green); color: #fff; text-decoration: none; cursor: pointer; }
+  .work-btn.ghost { background: transparent; color: var(--green); }
+  .work-btn[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+  .work-status { font-size: 13px; color: var(--ink-soft); font-style: italic; margin-top: 12px; }
+  .work-embed { margin-top: 16px; }
+  .work-embed iframe { width: 100%; height: 560px; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+  .work-note { font-size: 13px; color: var(--ink-soft); margin: 14px 0 0; }
 </style>
 </head>
 <body>
@@ -362,7 +375,7 @@
 
   <section id="defense-schedule">
     <h2>5th Grade Defense Schedule</h2>
-    <p class="section-intro">This year's Defense of Learning rounds, followed by a placeholder for the student schedule. Once it's built, the Goldsmith Google Sheet with student, date, time, and panel will display below.</p>
+    <p class="section-intro">This year's Defense of Learning rounds, followed by the shared sheets where teachers and mentors keep the student schedule and readiness up to date.</p>
 
     <div class="grade-section">
       <div class="grade-heading"><h3>Fifth Grade</h3><span class="note">Defense of Learning (DOL) — two rounds</span></div>
@@ -378,20 +391,35 @@
       </div>
     </div>
 
-    <h3 style="font-family:'Source Serif 4',Georgia,serif;font-weight:600;font-size:21px;margin:36px 0 12px;">2026–27 Student Schedule</h3>
-    <span class="preview-badge">⚠ Preview only — not yet connected to a sheet</span>
-    <div class="sheet-wrap">
-      <table class="sheet-table">
-        <thead>
-          <tr><th>Student Name</th><th>Date</th><th>Time</th><th>Panel</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Not yet scheduled</td><td>—</td><td>—</td><td>—</td></tr>
-          <tr><td>Not yet scheduled</td><td>—</td><td>—</td><td>—</td></tr>
-          <tr><td>Not yet scheduled</td><td>—</td><td>—</td><td>—</td></tr>
-        </tbody>
-      </table>
+    <h3 style="font-family:'Source Serif 4',Georgia,serif;font-weight:600;font-size:21px;margin:36px 0 6px;">2026–27 Defense Workspace</h3>
+    <p class="section-intro" style="margin-bottom:18px;">Two shared Google Sheets, kept up to date by teachers and mentors. Sign in with your JCPS Google account. Staff only, because these sheets include student names.</p>
+
+    <div class="work-grid">
+      <div class="work-card" id="work-defense">
+        <span class="work-tag">Teachers &amp; panelists</span>
+        <h4>Defense Schedule</h4>
+        <p>Add your students to a date, time, room, and panel. Panelists sign up here too. Each defense needs two scoring-trained staff, and every panelist turns in their own rubric.</p>
+        <div class="work-actions">
+          <a class="work-btn" data-sheet="defense" href="#" target="_blank" rel="noopener">Open Defense Schedule</a>
+          <button class="work-btn ghost" type="button" data-embed="defense">Show on this page</button>
+        </div>
+        <div class="work-status" data-status="defense"></div>
+        <div class="work-embed" data-embed-box="defense" hidden></div>
+      </div>
+
+      <div class="work-card" id="work-mentor">
+        <span class="work-tag">Mentors</span>
+        <h4>Mentor Tracker</h4>
+        <p>Mark when a student has finished their Google Slides and practiced their presentation, so everyone can see who is ready to defend.</p>
+        <div class="work-actions">
+          <a class="work-btn" data-sheet="mentor" href="#" target="_blank" rel="noopener">Open Mentor Tracker</a>
+          <button class="work-btn ghost" type="button" data-embed="mentor">Show on this page</button>
+        </div>
+        <div class="work-status" data-status="mentor"></div>
+        <div class="work-embed" data-embed-box="mentor" hidden></div>
+      </div>
     </div>
+    <p class="work-note">If a sheet says you need access, you are probably signed in to a personal Google account. Switch to your JCPS account and refresh.</p>
   </section>
 
   <section id="artifacts">
@@ -516,6 +544,39 @@
   go.addEventListener('click', function () { dlg.close(); });
   dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
 })();
+</script>
+<script>
+  // ===== EDIT HERE: paste each Google Sheet link between the quotes =====
+  var SHEET_LINKS = {
+    defense: "https://docs.google.com/spreadsheets/d/120EAbU0-56hv9i5-AnijuWjRahRqqG2d1r93Qyf4l34/edit?usp=sharing",   // Defense Schedule sheet
+    mentor:  "https://docs.google.com/spreadsheets/d/1pjieSRW-qnmu-2rbq9YB8G6EjEk0LYt0rrAh7wP0jdQ/edit?usp=sharing"    // Mentor Tracker sheet
+  };
+  // ======================================================================
+  (function () {
+    function embedUrl(u) { return u.replace(/\/(edit|view|htmlview)[^]*$/, "/edit?rm=minimal"); }
+    Object.keys(SHEET_LINKS).forEach(function (k) {
+      var url = SHEET_LINKS[k];
+      var open = document.querySelector('[data-sheet="' + k + '"]');
+      var btn = document.querySelector('[data-embed="' + k + '"]');
+      var box = document.querySelector('[data-embed-box="' + k + '"]');
+      var status = document.querySelector('[data-status="' + k + '"]');
+      if (!url) {
+        open.setAttribute("aria-disabled", "true"); btn.disabled = true; btn.style.opacity = ".45";
+        status.textContent = "Sheet link coming soon.";
+        return;
+      }
+      open.href = url;
+      btn.addEventListener("click", function () {
+        if (box.hidden) {
+          if (!box.firstChild) {
+            var f = document.createElement("iframe"); f.src = embedUrl(url); f.title = k + " sheet"; f.loading = "lazy";
+            box.appendChild(f);
+          }
+          box.hidden = false; btn.textContent = "Hide";
+        } else { box.hidden = true; btn.textContent = "Show on this page"; }
+      });
+    });
+  })();
 </script>
 </body>
 </html>
